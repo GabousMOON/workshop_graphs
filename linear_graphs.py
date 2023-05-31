@@ -3,11 +3,12 @@ from bokeh.layouts import column, row
 from bokeh.models import ColumnDataSource, CustomJS, Slider, Div
 from bokeh.plotting import figure, show
 
-x = np.linspace(-10, 10, 500)
+x = np.linspace(-15, 15, 500)
 y = x
 
 source = ColumnDataSource(data=dict(x=x, y=y))
 
+# TODO: Find out how to make LaTeX work
 div = Div(
     text="""
         <p>This is a Linear Graph that is modeled by the equation y=mx + b</p>
@@ -20,8 +21,10 @@ div = Div(
     """
 )
 
+# TODO: Work on styling graph better
 plot = figure(
-    y_range=(-10, 10),
+    y_range=(-11, 11),
+    x_range=(-11, 11),
     width=600,
     height=600,
     title="y=mx + b",
@@ -29,26 +32,33 @@ plot = figure(
     toolbar_location=None,
 )
 
+plot.xaxis.ticker = [num for num in range(-10, 11)]
+plot.yaxis.ticker = [num for num in range(-10, 11)]
+plot.outline_line_width = 6
+plot.outline_line_color = "#78be20"
+plot.outline_line_alpha = 0.4
+
 plot.line("x", "y", source=source, line_width=3, line_color="#578164")
 
+# TODO: Figure out how to better space out the page
 rise = Slider(
     start=-10,
     end=10,
     value=1,
-    step=0.1,
+    step=0.01,
     title="Change in Rise",
     bar_color="green",
 )
 run = Slider(
-    start=0.1,
+    start=1,
     end=10,
     value=1,
-    step=0.1,
+    step=0.01,
     title="Change in run",
     bar_color="green",
 )
 y_intercept = Slider(
-    start=-6.4, end=6.4, value=0, step=0.1, title="y-intercept (b)", bar_color="green"
+    start=-8, end=8, value=0, step=0.1, title="y-intercept (b)", bar_color="green"
 )
 
 
