@@ -1,40 +1,77 @@
-from bokeh.plotting import figure, show
-from bokeh.io import curdoc
 import numpy as np
-import sympy as sp
+from bokeh.layouts import column, row
+from bokeh.models import ColumnDataSource, CustomJS, Slider, Div, MathML
+from bokeh.plotting import figure, show
 
-"""
-    Built in themes to choose from are
-    "caliber", "dark_minimal", "light_minimal", "night_sky", "contrast"
-"""
+x = np.linspace(-10, 10, 500)
+y = np.sin(x)
 
-curdoc().theme = "dark_minimal"
-x_vals = np.arange(-10, 10)
-y_vals = x_vals
+source = ColumnDataSource(data=dict(x=x, y=y))
 
-"""
-    #1. Setting the width and height
-    #2. Responsive plot sizing
-    #3. Setting axes' appearance
-    #4. Axis Ranges
-    #5. Positioning the axis
+div = Div(
+    text="""
+        <p>This is a sinusoidal function represented by the equation <br> $$A\sin(Bx-C) + D$$ </p>
+        <ul>
+            <li>A is the amplitude</li>
+            <li>B is the frequency</li>
+            <li>C is the phase shift</li>
+            <li>D is the vertical shift</li>
+        </ul>
 
-"""
-
-
-fig = figure(
-    title="Initial Graph",
-    sizing_mode="stretch_width",  # 2
+    """
 )
 
-fig.xaxis.axis_label = "X values"  # 3
-fig.xaxis.axis_line_width = 1  # 3
-fig.xaxis.axis_line_color = "red"  # 3
+plot = figure(
+    y_range=(-5, 5),
+    width=600,
+    height=600,
+    title="$$y=Asin(Bx-C) + D$$",
+    tools="",
+    toolbar_location=None,
+)
 
-fig.axis[0].fixed_location = 0  # 5
-fig.axis[1].fixed_location = 0  # 5
+plot.line("x", "y", source=source, line_width=3, line_color="#578164")
+
+amp = Slider(
+    start=0.1, end=10, value=1, step=0.1, title="Amplitude (A)", bar_color="green"
+)
+freq = Slider(
+    start=0.1, end=10, value=1, step=0.1, title="Frequency (B)", bar_color="green"
+)
+phase = Slider(
+    start=-6.4, end=6.4, value=0, step=0.1, title="Phase Shift (C)", bar_color="green"
+)
+offset = Slider(
+    start=-9,
+    end=9,
+    value=0,
+    step=0.1,
+    title="Vertical Translation (D)",
+    bar_color="green",
+)
+
+callback = CustomJS(
+    args=dict(source=source, amp=amp, freq=freq, phase=phase, offset=offset),
+    code="""
+    const A = amp.value
+    const k = freq.value
+    const phi = phase.value
+    const B = offset.value
+
+    const x = source.data.x
+    const y = Array.from(x, (x) => B + A*Math.sin(k*x+phi))
 
 
-fig.line(x_vals, y_vals, legend_label="Temp.", line_width=4)
+    source.data = { x, y }
+""",
+)
 
-show(fig)  # type: ignore
+amp.js_on_change("value", callback)
+freq.js_on_change("value", callback)
+phase.js_on_change("value", callback)
+offset.js_on_change("value", callback)
+
+plot.xaxis.fixed_location = 0
+plot.yaxis.fixed_location = 0
+
+show(row(column(div, amp, freq, phase, offset), plot))
