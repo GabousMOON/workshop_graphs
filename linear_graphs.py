@@ -4,8 +4,6 @@ from bokeh.models import ColumnDataSource, CustomJS, Slider, Div, SetValue
 from bokeh.plotting import figure, show
 from bokeh.io import curdoc
 
-curdoc().theme = "dark_minimal"
-
 x = np.linspace(-15, 15, 500)
 y = x
 
@@ -14,16 +12,17 @@ source = ColumnDataSource(data=dict(x=x, y=y))
 div = Div(
     text=r"""
         <p>This is a Linear Graph that is modeled by the equation <br>
-        $$y=mx + b$$</p>
+        <div style = "text-align: center; font-size: 25px">$$y=mx + b$$</div>
+        </p>
         <ul>
             <li>m is the slope of the function</li>
             <li>b is the y intercept of the function</li>
-            <li>m is calculated by finding $$ \frac{y_2-y_1}{x_2-x_1}$$</li>
+            <li>m is calculated by finding $$ \frac{y_2-y_1}{x_2-x_1}$$ or $$ \frac{ \Delta y}{ \Delta x} $$ </li>
             <li>b can be calculated by setting x=0 and then solve for b</li>
         </ul>
     """,
     styles={
-        "font-size": "15px",
+        "font-size": "20px",
     },
 )
 
@@ -32,11 +31,12 @@ div = Div(
 plot = figure(
     y_range=(-11, 11),
     x_range=(-11, 11),
-    aspect_ratio=1,
-    width=500,
+    width=450,
+    height=450,
     title_location="above",
     tools="",
     toolbar_location=None,
+    styles={"margin-left": "10%"},
 )
 
 
@@ -52,6 +52,7 @@ plot.outline_line_width = 6
 plot.outline_line_color = "#78be20"
 plot.outline_line_alpha = 0.7
 
+
 plot.line("x", "y", source=source, line_width=3.5, line_color="#78be20")
 
 # TODO: Figure out how to better space out the page
@@ -60,8 +61,9 @@ rise = Slider(
     end=10,
     value=1,
     step=1,
-    title="Change in Rise",
+    title=r"$$ \Delta y $$",
     bar_color="green",
+    styles={"font-size": "25px", "text-align": "center"},
 )
 
 run = Slider(
@@ -69,16 +71,23 @@ run = Slider(
     end=10,
     value=1,
     step=1,
-    title="Change in run",
+    title=r"$$ \Delta x $$",
     bar_color="green",
+    styles={"font-size": "25px", "text-align": "center"},
 )
 y_intercept = Slider(
-    start=-8, end=8, value=0, step=0.1, title="y-intercept (b)", bar_color="green"
+    start=-8,
+    end=8,
+    value=0,
+    step=0.1,
+    title="y-intercept (b)",
+    bar_color="green",
+    styles={"font-size": "25px", "text-align": "center"},
 )
 
 equation_div = Div(
     text="<b>y = 1x + 0</b>",
-    styles={"font-size": "25px", "font-style": "italic", "margin-top": "20%"},
+    styles={"font-size": "25px", "font-style": "italic", "margin-left": "30%"},
 )
 
 callback = CustomJS(
@@ -111,4 +120,10 @@ y_intercept.js_on_change("value", callback)
 plot.xaxis.fixed_location = 0
 plot.yaxis.fixed_location = 0
 
-show(row(column(div, rise, run, y_intercept), plot, equation_div))
+show(
+    row(
+        column(div, rise, run, y_intercept, styles={"margin-left": "10%"}),
+        column(equation_div, plot, styles={"text-align": "center"}),
+        styles={"margin-top": "3%"},
+    )
+)
