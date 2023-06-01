@@ -26,8 +26,7 @@ div = Div(
     },
 )
 
-# TODO: Work on styling graph better
-# TODO: Work on making graph responsive to window size
+
 plot = figure(
     y_range=(-11, 11),
     x_range=(-11, 11),
@@ -55,7 +54,6 @@ plot.outline_line_alpha = 0.7
 
 plot.line("x", "y", source=source, line_width=3.5, line_color="#78be20")
 
-# TODO: Figure out how to better space out the page
 rise = Slider(
     start=-10,
     end=10,
