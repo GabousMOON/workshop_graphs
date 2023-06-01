@@ -87,7 +87,7 @@ y_intercept = Slider(
 
 equation_div = Div(
     text="<b>y = 1x + 0</b>",
-    styles={"font-size": "25px", "font-style": "italic", "margin-left": "30%"},
+    styles={"font-size": "25px", "font-style": "italic", "margin-left": "45%"},
 )
 
 callback = CustomJS(
