@@ -107,7 +107,15 @@ callback = CustomJS(
     const x = source.data.x
     const y = Array.from(x, (x) => B + M*x)
 
-    eq_div.text = "y = " + String(del_y) + "/" + String(del_x) + "x+" + String(B.toFixed(2))
+    if (B == 0 && del_y == del_x) {
+        eq_div.text = "y = x"
+    } else if (B == 0) {
+        eq_div.text = "y = " + String(del_y) + "/" + String(del_x) + "x"
+    } else if (del_y == del_x) {
+        eq_div.text = "y = " +"x+" + String(B.toFixed(2))
+    } else {
+        eq_div.text = "y = " + String(del_y) + "/" + String(del_x) + "x+" + String(B.toFixed(2))
+    }
 
     source.data = { x, y }
 """,
