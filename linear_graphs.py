@@ -111,10 +111,14 @@ callback = CustomJS(
         eq_div.text = "y = x"
     } else if (B == 0) {
         eq_div.text = "y = " + String(del_y) + "/" + String(del_x) + "x"
-    } else if (del_y == del_x) {
+    } else if (del_y == del_x && B > 0) {
         eq_div.text = "y = " +"x+" + String(B.toFixed(2))
-    } else {
+    } else if (del_y == del_x && B < 0) {
+        eq_div.text = "y = " +"x" + String(B.toFixed(2))
+    } else if (B > 0) {
         eq_div.text = "y = " + String(del_y) + "/" + String(del_x) + "x+" + String(B.toFixed(2))
+    } else if (B < 0){
+        eq_div.text = "y = " + String(del_y) + "/" + String(del_x) + "x" + String(B.toFixed(2))
     }
 
     source.data = { x, y }
