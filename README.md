@@ -19,7 +19,6 @@ Math Graph is a collection of interactive graphs that will help students visuali
   <li>Definition of the Derivative</li>
   <li>Derivatives</li>
   <li>Reimann Sums and Integrals</li>
-  <li></li>
 </ul>
 
 ## Libraries
