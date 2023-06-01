@@ -2,6 +2,9 @@ import numpy as np
 from bokeh.layouts import column, row
 from bokeh.models import ColumnDataSource, CustomJS, Slider, Div, SetValue
 from bokeh.plotting import figure, show
+from bokeh.io import curdoc
+
+curdoc().theme = "dark_minimal"
 
 x = np.linspace(-15, 15, 500)
 y = x
@@ -25,11 +28,12 @@ div = Div(
 )
 
 # TODO: Work on styling graph better
+# TODO: Work on making graph responsive to window size
 plot = figure(
     y_range=(-11, 11),
     x_range=(-11, 11),
-    width=600,
-    height=600,
+    aspect_ratio=1,
+    width=500,
     title_location="above",
     tools="",
     toolbar_location=None,
@@ -48,7 +52,7 @@ plot.outline_line_width = 6
 plot.outline_line_color = "#78be20"
 plot.outline_line_alpha = 0.7
 
-plot.line("x", "y", source=source, line_width=3, line_color="#578164")
+plot.line("x", "y", source=source, line_width=3.5, line_color="#78be20")
 
 # TODO: Figure out how to better space out the page
 rise = Slider(
@@ -59,6 +63,7 @@ rise = Slider(
     title="Change in Rise",
     bar_color="green",
 )
+
 run = Slider(
     start=1,
     end=10,
