@@ -17,7 +17,6 @@ Coming Soon
 
 ## Not yet functional
 <ul>
-
 </ul>
 
 ## Future Projects
