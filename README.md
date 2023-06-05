@@ -12,11 +12,12 @@ Coming Soon
 ## Operational Graphs
 <ul>
   <li>Linear Transformations</li>
+  <li>Exponential Functions</li>
 </ul>
 
 ## Not yet functional
 <ul>
-  <li>Exponential Functions</li>
+
 </ul>
 
 ## Future Projects
